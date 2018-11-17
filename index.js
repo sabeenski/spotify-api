@@ -1,15 +1,22 @@
 const express = require ('express')
+const bodyParser = require('body-parser')
+
 const app = express ()
 const port = process.env.PORT || 4000
-const Playlist = require('./playlists/model')
+const loginsRouter = require('./auth/routes')
+const usersRouter = require('./users/routes')
+const playlistsRouter = require('./playlists/routes')
 
 
 
-app.get('/playlists', function (req, res, next) {
-    Playlist.findAll().then(playlists => {
-      res.json({ playlists: playlists })
-    })
-  }) 
+
+app
+    .use(bodyParser.json())
+    .use(usersRouter)
+    .use(loginsRouter)
+    .use(playlistsRouter)
+    
+
 
 
 
