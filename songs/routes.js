@@ -1,72 +1,52 @@
 const {Router} = require('express')
 const Song = require('./model')
-
-
+const Playlist = require('../playlists/model')
 
 
 const router = new Router()
 
-
-router.get('/songs', (req, res, next) => {    
-    Song
-    .findAll()
-    .then(songs => {
-        res.send({songs})
-    })
-    .catch(error => next(error))
-})  
-
-
-
-router.post('/songs', (req,res, next) => {
-    Song
-    .create(req.body)
-    .then(song => {
-        if(!song){
-            return res.status(404).send ({
-                message: `Song does not exist`
-            })
-        }
-        return res.status(201).send(song)
-    })
-    .catch(error => next(error))
-})
-
-
-router.get('/songs/:id', (req, res, next) => {
-  Song
-    .findById(req.params.id)
-    .then(song => {
-      if (!song) {
-        return res.status(404).send({
-          message: `Song does not exist`
+router.post('/playlists/:id/songs', (req,res,next) => {
+    Playlist
+        .findById(req.params.id)
+        .then(playlist => {
+            if(!playlist){
+                return res.status(404).send({
+                    message: `No playlist found!`
+                })
+            }
+            Song
+              .create({
+                  title: req.body.title,
+                  artist: req.body.artist,
+                  album: req.body.album,
+                  playlistId: playlist.id
+              }) 
+              .then(song => {
+                  res.status(201).send(song)
+              }) 
         })
-      }
-      return res.send(song)
-    })
-    .catch(error => next(error))
+    .catch(error => next(error))              
+
 })
 
+// BONUS
+// DELETE /playlists/:id/songs/:id: A user should be able to delete songs from their playlist.
 
+router.delete('/playlists/:id/songs/:id', (req,res,next) => {
+    Playlist
+        .findById(req.params.id)
+        .then(Song.findById(req.params.id)
+                    .then(song => song.destroy()
+                        .then(res.send({
+                            message: `Your song is deleted.`
+                        }))
+                    )           
+            )
+        
 
-
-
-router.delete('/songs/:id', (req,res,next) =>{
-    Song
-    .findById(req.params.id)
-    .then(song => {
-        if(!song){
-            return res.status(404).send({
-                message: `Song does not exist`
-            })
-        }
-        return song.destroy()
-        .then(() => res.send({
-            message: `Song was deleted`
-        }))
-    })
     .catch(error => next(error))
+       
+        
 })
-
 
 module.exports = router
