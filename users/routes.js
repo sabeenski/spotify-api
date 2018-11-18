@@ -33,22 +33,8 @@ router.post('/users', (req,res, next) => {
 })
 
 
-// BONUS //
 
 
-router.get('/artists',(req,res,next) => {
-    
-    Song
-    .findAll()
-    .then(songs => {
-        const artists = songs.map(song => {
-          return `artist: ${song.artist}, title: ${song.title}`
-            
-        })
-        return res.send(artists)
-    }
-    )
-})
 
 
 

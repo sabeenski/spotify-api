@@ -30,6 +30,25 @@ router.post('/playlists/:id/songs', (req,res,next) => {
 })
 
 // BONUS
+
+router.get('/artists',(req,res,next) => {
+    
+    Song
+    .findAll()
+    .then(songs => {
+        const artists = songs.map(song => {
+          return `artist: ${song.artist}, title: ${song.title}`
+            
+        })
+        return res.send(artists)
+    }
+    )
+
+
+    .catch(error => next(error))
+       
+        
+})
 // DELETE /playlists/:id/songs/:id: A user should be able to delete songs from their playlist.
 
 router.delete('/playlists/:id/songs/:id', (req,res,next) => {
