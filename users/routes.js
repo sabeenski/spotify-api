@@ -3,8 +3,6 @@ const User = require('./model')
 const bcrypt = require('bcrypt')
 const router = new Router()
 
-
- 
 router.post('/users', (req,res, next) => {
     const user = {
         email: req.body.email,
@@ -32,11 +30,6 @@ router.post('/users', (req,res, next) => {
     
     
 })
-
-
-
-
-
 
 
 module.exports = router
