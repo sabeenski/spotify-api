@@ -6,7 +6,7 @@ const port = process.env.PORT || 4000
 const loginsRouter = require('./auth/routes')
 const usersRouter = require('./users/routes')
 const playlistsRouter = require('./playlists/routes')
-
+const songsRouter = require('./songs/routes')
 
 
 
@@ -15,6 +15,7 @@ app
     .use(usersRouter)
     .use(loginsRouter)
     .use(playlistsRouter)
+    .use(songsRouter)
     
 
 
