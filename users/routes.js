@@ -25,6 +25,20 @@ router.post('/users', (req,res, next) => {
         return res.status(201).send(user)
     })   
 })
+/////
+router.get('/users/:id', (req, res, next) => {
+    User
+    .findById(req.params.id)
+    .then(user => {
+        if(!user){
+            return res.status(404).send({
+                message: `User does not exist`
+            })
+        }
+        return res.send(user)
+    })
+    .catch(error => next(error))
+})
 
 
 module.exports = router
